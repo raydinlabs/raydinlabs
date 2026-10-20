@@ -3,6 +3,30 @@
   "name": "raydinlabs",
   "compatibility_date": "2026-10-19",
   "assets": {
-    "directory": "./dist"
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": [
+      "/api/*",
+      "/media/*"
+    ]
+  },
+  "main": "server/worker.js",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "raydinlabs-content",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "raydinlabs-media"
+    }
+  ],
+  "vars": {
+    "ADMIN_EMAIL": "raydinlabs@gmail.com",
+    "RESEND_FROM": "Raydin Labs <website@raydinlabs.org>",
+    "RESEND_TEMPLATE_ID": "352ff4ec-f8f9-4058-90e3-efaa20774cb9"
   }
 }

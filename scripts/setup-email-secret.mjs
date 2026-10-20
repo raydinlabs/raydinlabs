@@ -1,0 +1,10 @@
+import {readFile} from 'node:fs/promises';
+import {spawn} from 'node:child_process';
+const config=await readFile('.dev.vars','utf8');
+const line=config.split('\n').find(line=>line.startsWith('RESEND_API_KEY='));
+if(!line)throw Error('No local email key. Use npx wrangler secret put RESEND_API_KEY in your own terminal.');
+const key=JSON.parse(line.slice('RESEND_API_KEY='.length));
+if(typeof key!=='string'||!key.startsWith('re_'))throw Error('Invalid local email secret.');
+const child=spawn(process.execPath,['node_modules/wrangler/bin/wrangler.js','secret','put','RESEND_API_KEY'],{stdio:['pipe','inherit','inherit']});
+child.stdin.end(key);
+child.on('exit',code=>process.exit(code||0));
