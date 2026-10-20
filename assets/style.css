@@ -34,3 +34,13 @@ h1{font-size:clamp(56px,7vw,104px)}h2{font-size:clamp(42px,5vw,72px)}h3{font-siz
 @media(max-width:1100px){.site-header nav a{font-size:12px;padding-inline:6px}.site-header nav{gap:0}.brand{font-size:17px}.hero-copy h1{font-size:clamp(68px,8vw,90px)}}
 @media(max-width:800px){body{font-size:18px}.hero{min-height:940px;height:100svh;max-height:none}.hero-copy{bottom:115px}.hero-copy h1{font-size:clamp(52px,8.5vw,76px);max-width:620px}#earth{width:620px;height:620px;right:-230px;top:270px;opacity:.8}.site-header nav a{font-size:17px}.hero-copy .eyebrow{font-size:12px}.hero-actions .button{font-size:12px;padding:16px;gap:20px}.page-heading h1{font-size:clamp(50px,9vw,72px)}.mission-grid p:not(.eyebrow),.feature-copy p,.directory p{font-size:17px}}
 @media(max-width:420px){.hero{min-height:850px}.hero-copy h1{font-size:clamp(46px,12vw,52px)}.hero-copy{bottom:110px}#earth{width:470px;height:470px;right:-170px;top:250px}.hero-actions{gap:10px}.hero-actions .button{font-size:11px;padding:14px 12px;gap:14px}.hero-copy .eyebrow{font-size:12px}}
+
+/* Close orbital view: the left hemisphere rotates into the right edge. */
+#earth{width:140vmax;height:140vmax;right:calc(-70vmax - 6vw);top:54%;opacity:1}
+.site-header{height:104px;background:rgba(26,38,57,.28);backdrop-filter:blur(28px) saturate(135%);-webkit-backdrop-filter:blur(28px) saturate(135%);box-shadow:0 12px 38px rgba(0,0,0,.35)}
+.brand{font-size:26px;gap:14px;color:#a5abb4;transition:color .25s ease}.brand img{width:64px;height:64px}.brand:hover,.brand:focus-visible{color:var(--steel)}
+.hero-actions .button{background:rgba(26,38,57,.42);backdrop-filter:blur(24px) saturate(140%);-webkit-backdrop-filter:blur(24px) saturate(140%);box-shadow:inset 0 1px 0 rgba(226,232,240,.12),0 12px 32px rgba(0,0,0,.4)}.hero-actions .button:hover{background:rgba(51,78,104,.65)}
+.site-header nav a:hover,.site-header nav a[aria-current=page]{background:rgba(51,78,104,.38);backdrop-filter:blur(16px)}
+@media(max-width:1100px) and (min-width:801px){.brand{font-size:22px;gap:8px}.brand img{width:56px;height:56px}.site-header nav a{padding-inline:5px;font-size:11px}}
+@media(max-width:800px){.site-header{height:92px}.brand{font-size:24px;gap:10px}.brand img{width:58px;height:58px}.site-header nav{top:92px;max-height:calc(100svh - 92px);background:rgba(26,38,57,.72);-webkit-backdrop-filter:blur(28px)}#earth{width:1500px;height:1500px;right:-1080px;top:210px;opacity:.8}.hero-copy h1{text-shadow:0 3px 28px #000,0 0 60px #000}.menu-toggle{background:rgba(51,78,104,.4);backdrop-filter:blur(18px)}}
+@media(max-width:420px){.site-header{padding-inline:20px}.brand{font-size:22px}.brand img{width:54px;height:54px}#earth{width:1300px;height:1300px;right:-970px;top:190px}}
