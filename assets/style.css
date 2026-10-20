@@ -51,10 +51,10 @@ h1{font-size:clamp(56px,7vw,104px)}h2{font-size:clamp(42px,5vw,72px)}h3{font-siz
 .hero-copy.wrap{translate:-24px 0}
 @media(max-width:800px){.hero-copy.wrap{translate:-8px 0}.earth-scene{-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 52%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0%,#000 52%,transparent 100%)}}
 
-/* Keep the title in open space, with a distant textured Moon above it. */
+/* Keep the title in open space, against the star field. */
 .hero-copy.wrap{left:4.2%;right:auto;width:40%;max-width:740px;margin:0;translate:none}.hero-copy h1{font-size:clamp(58px,5.6vw,106px)}
 #stars{position:absolute;inset:0;width:100%;height:100%;opacity:.65}
-#moon{position:absolute;width:clamp(120px,12vw,230px);height:clamp(120px,12vw,230px);left:25%;top:13%;opacity:.9}
+
 @media(max-width:1100px) and (min-width:801px){.hero-copy h1{font-size:clamp(48px,5.6vw,62px)}}
-@media(max-width:800px){.hero-copy.wrap{left:20px;width:calc(100% - 40px)}.hero-copy h1{font-size:clamp(46px,8vw,64px);max-width:600px}#moon{left:28px;top:135px;width:130px;height:130px}#stars{opacity:.45}#earth{right:-1190px}}
-@media(max-width:420px){.hero-copy h1{font-size:46px}#earth{right:-1100px}#moon{width:110px;height:110px;top:130px}}
+@media(max-width:800px){.hero-copy.wrap{left:20px;width:calc(100% - 40px)}.hero-copy h1{font-size:clamp(46px,8vw,64px);max-width:600px}#stars{opacity:.45}#earth{right:-1190px}}
+@media(max-width:420px){.hero-copy h1{font-size:46px}#earth{right:-1100px}}

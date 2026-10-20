@@ -8,7 +8,7 @@ const cta = () => `<section class="cta wrap"><div>${eyebrow('Have an idea?')}<h2
 export function pages(site){
 return {
 index:{title:'Raydin Labs — Building technology in service of living',description:'Independent engineering, avionics and modular hardware. Explore Raydin Labs projects and work with us to turn ideas into practical systems.',body:`
-<section class="hero" aria-labelledby="hero-title"><div class="earth-scene"><canvas id="stars" aria-hidden="true"></canvas><canvas id="moon" aria-hidden="true"></canvas><canvas id="earth" aria-hidden="true"></canvas></div>
+<section class="hero" aria-labelledby="hero-title"><div class="earth-scene"><canvas id="stars" aria-hidden="true"></canvas><canvas id="earth" aria-hidden="true"></canvas></div>
 
 <div class="hero-copy wrap">${eyebrow('Curiosity. Engineered.')}<h1 id="hero-title">Building<br>technology<br>in service<br>of <em>living.</em></h1><div class="hero-actions">${button('projects.html','Explore our work',true)}${button('services.html','Work with us')}</div></div>
 <div class="hero-bottom wrap"><a href="#updates" class="scroll-link"><span class="scroll-line"></span>SCROLL TO EXPLORE</a></div></section>
