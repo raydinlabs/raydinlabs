@@ -30,7 +30,7 @@ rustc --test rust/galaxy.rs -o /tmp/raydin-galaxy-tests
 
 ## Deployment compatibility
 
-The repository remains deployable as a static site from its root with all original URLs. `dist/` is also produced for static hosting providers. No Node.js or Rust server is needed in production. Existing deployment configuration and domain settings are not changed. The PR is intended for review before merging to the production branch.
+The repository remains deployable as a static site from its root with all original URLs. `dist/` is also produced for static hosting providers. No Node.js or Rust server is needed in production. Cloudflare Workers deployment uses the committed `wrangler.jsonc`, which sets the asset directory to `./dist`. Build with `npm run build`, then deploy with `npm run deploy` (or the existing `npx wrangler deploy` command). This prevents repository source and installed dependencies from being uploaded. The Worker name is `raydinlabs`, matching the existing Cloudflare build settings. Domain settings are unchanged.
 
 ## Integrations and outstanding configuration
 

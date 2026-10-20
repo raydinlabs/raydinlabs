@@ -3,6 +3,17 @@
   "version": "2.0.0",
   "private": true,
   "type": "module",
-  "scripts": {"build": "node scripts/build.mjs", "dev": "node scripts/serve.mjs", "test": "node --test tests/*.test.mjs"},
-  "engines": {"node": ">=22"}
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/serve.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "wrangler": "4.151.2"
+  }
 }
