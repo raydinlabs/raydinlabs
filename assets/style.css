@@ -44,3 +44,9 @@ h1{font-size:clamp(56px,7vw,104px)}h2{font-size:clamp(42px,5vw,72px)}h3{font-siz
 @media(max-width:1100px) and (min-width:801px){.brand{font-size:22px;gap:8px}.brand img{width:56px;height:56px}.site-header nav a{padding-inline:5px;font-size:11px}}
 @media(max-width:800px){.site-header{height:92px}.brand{font-size:24px;gap:10px}.brand img{width:58px;height:58px}.site-header nav{top:92px;max-height:calc(100svh - 92px);background:rgba(26,38,57,.72);-webkit-backdrop-filter:blur(28px)}#earth{width:1500px;height:1500px;right:-1080px;top:210px;opacity:.8}.hero-copy h1{text-shadow:0 3px 28px #000,0 0 60px #000}.menu-toggle{background:rgba(51,78,104,.4);backdrop-filter:blur(18px)}}
 @media(max-width:420px){.site-header{padding-inline:20px}.brand{font-size:22px}.brand img{width:54px;height:54px}#earth{width:1300px;height:1300px;right:-970px;top:190px}}
+
+/* Blend the orbital scene into the following black section. */
+.earth-scene{-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 62%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0%,#000 62%,transparent 100%)}
+.earth-scene:after{content:'';position:absolute;inset:0;background:rgba(26,38,57,.08);backdrop-filter:blur(.65px) saturate(115%);-webkit-backdrop-filter:blur(.65px) saturate(115%);pointer-events:none}
+.hero-copy.wrap{translate:-24px 0}
+@media(max-width:800px){.hero-copy.wrap{translate:-8px 0}.earth-scene{-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 52%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0%,#000 52%,transparent 100%)}}
