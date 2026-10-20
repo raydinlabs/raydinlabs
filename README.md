@@ -1,6 +1,6 @@
 # Raydin Labs website
 
-Matte aerospace website with a procedural Andromeda-inspired 3D scene, retro Share Tech Mono typography, glass navigation, project stories, a blog, wiki, and a private publishing studio. Existing `.html` links remain valid.
+Matte aerospace website with a textured, rotating 3D Earth, retro Share Tech Mono typography, glass navigation, project stories, a blog, wiki, and a private publishing studio. Existing `.html` links remain valid.
 
 ## Development
 
@@ -13,7 +13,7 @@ npm run db:local
 npm run dev
 ```
 
-Open http://localhost:4173. The full Cloudflare Worker runs locally with local D1/R2 storage. `npm test` covers authentication, draft privacy, content CRUD/conflicts, rate limiting, email provider responses, uploads, navigation, and generated assets. `npm run build` generates the 82,000-star model and all public HTML into `dist/`.
+Open http://localhost:4173. The full Cloudflare Worker runs locally with local D1/R2 storage. `npm test` covers authentication, draft privacy, content CRUD/conflicts, rate limiting, email provider responses, uploads, navigation, and generated assets. `npm run build` generates all public HTML into `dist/`.
 
 ## Deploy from this repository
 
@@ -54,7 +54,7 @@ Sessions use HttpOnly/Secure/SameSite cookies, expire after eight hours, and are
 
 - `src/pages.mjs`: shared page layout and static editorial copy.
 - `assets/style.css`: matte palette, glass navigation, responsive layout and motion.
-- `scripts/galaxy.mjs`, `assets/galaxy.js`: deterministic star model and WebGL/Canvas rendering. M31-inspired artistic visualization, not an astronomical catalogue.
+- `assets/earth.js`: textured WebGL Earth with solar shading, atmospheric rim, reduced-motion support, and static software fallback. Surface texture: Three.js examples, `earth_atmos_2048.jpg` (https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg).
 - `server/worker.js`: contact, authentication, publishing and media APIs.
 - `server/seed.js`, `migrations/`: initial public content and database schema.
 - `assets/admin.js`, `assets/content.js`: publishing editor and public content rendering.

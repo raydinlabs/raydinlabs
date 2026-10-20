@@ -10,6 +10,5 @@ test('all pages preserve navigation, local destinations and section anchors',asy
  for(const [,file,anchor] of html.matchAll(/href="([a-z-]+\.html)#([a-z-]+)"/g)){const target=await readFile(file,'utf8');assert.ok(target.includes(`id="${anchor}"`),`${file}#${anchor}`);}
  }
 });
-test('galaxy binary is complete and finite',async()=>{const b=await readFile('assets/galaxy.bin');assert.equal(b.length,82000*7*4);for(let i=0;i<b.length;i+=4)assert.ok(Number.isFinite(b.readFloatLE(i)));});
 test('project brief preserves user text and does not execute markup',()=>{const brief=makeBrief({name:' Test ',email:'test@example.com',service:'Consultation',requirements:'<script>alert(1)</script> & notes'});assert.match(brief,/Name: Test/);assert.match(brief,/Budget: To be discussed/);assert.ok(brief.includes('<script>alert(1)</script> & notes'));});
 test('wiki search filters topics and restores all results',()=>{const guides=[{textContent:'Power issue',dataset:{keywords:'pcb'},hidden:false},{textContent:'Serial',dataset:{keywords:'uart'},hidden:false}];assert.equal(filterGuides(guides,' UART '),1);assert.equal(guides[0].hidden,true);assert.equal(filterGuides(guides,''),2);assert.equal(filterGuides(guides,'unmatched'),0);});

@@ -2,7 +2,6 @@ import {readFile,writeFile,mkdir,cp,rm} from 'node:fs/promises';
 import {pages,document} from '../src/pages.mjs';
 const site=JSON.parse(await readFile('src/site.json','utf8'));
 if(site.email && !/^[^\s@<>"&]+@[^\s@<>"&]+\.[^\s@<>"&]+$/.test(site.email))throw Error('Invalid public email');
-await import('./galaxy.mjs');
 for(const [key,page] of Object.entries(pages(site)))await writeFile(`${key}.html`,document(page,key,site));
 await writeFile('assets/site.json',JSON.stringify(site,null,2)+'\n');
 await rm('dist',{recursive:true,force:true});await mkdir('dist');
