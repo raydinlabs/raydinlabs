@@ -60,3 +60,20 @@ Sessions use HttpOnly/Secure/SameSite cookies, expire after eight hours, and are
 - `assets/admin.js`, `assets/content.js`: publishing editor and public content rendering.
 
 The old NASA photograph and credit have been removed from the current tree (historical Git commits are unchanged). The animation button is removed. The scene respects reduced-motion settings and pauses when the page is hidden. View Transitions enhance navigation in supporting browsers; ordinary page navigation remains the fallback.
+
+
+## Page Studio and admin login checklist
+
+The website editor in `/admin.html` now supports page text and hero image/GIF/video fields on the public pages, with private D1 drafts, iframe visitor preview, and an explicit Publish page action. Existing collection entries are still managed by the original publishing studio. The page editor stores safe text and media URLs, not arbitrary HTML. Files uploaded to R2 are publicly accessible immediately; drafts control only whether a page references them.
+
+**Required Cloudflare Worker setup (cannot be completed by GitHub commits alone):**
+
+1. Ensure the production Worker uses this repository's `server/worker.js`, not a static-only Pages deployment.
+2. Set the correct D1 database ID in `wrangler.jsonc`, bind it as `DB`, and run `npm run db:remote`. The new `0003_page_editor.sql` migration is required.
+3. Bind the R2 bucket as `MEDIA` for media uploads.
+4. In your own secure terminal, run `npm run setup:admin` or set `ADMIN_PASSWORD_HASH` using `npx wrangler secret put ADMIN_PASSWORD_HASH`. Do not share the password or hash in chat or commit it. The configured `ADMIN_EMAIL` must match the login email.
+5. Deploy with `npm run build && npm test && npm run deploy`. Then verify `/api/admin/session` returns a JSON 401 when signed out (not an HTML 404), sign in through `/admin.html`, save a draft, preview, publish and check the public page.
+
+If login reports "Admin sign-in has not been configured yet", the password secret is missing. "Publishing service is not configured yet" means the DB binding is missing. A 404 or HTML response from `/api/admin/login` means the Worker API is not serving that route. "Email or password is incorrect" means credentials do not match. Rate limits can temporarily block repeated attempts.
+
+Page text edits currently apply to stable headings, paragraphs, labels and text links present at initial page load; editing navigation destinations, complex layouts, and dynamic collection records is handled separately. Video uploads are limited to 10 MB; for larger files use an appropriately licensed HTTPS media URL or dedicated video hosting.
