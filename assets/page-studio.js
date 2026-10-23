@@ -4,7 +4,7 @@ if(studio){
  const root=document.createElement('section');root.className='page-studio';root.innerHTML='<h2>Website page editor</h2><p class="note">Select a page, edit its visible text and hero media, preview the actual visitor layout, then publish. Existing forms and navigation remain unchanged.</p><div class="studio-toolbar"><label>Page <select id="page-select"></select></label><button class="button" id="page-load" type="button">Load page</button><button class="button" id="page-preview" type="button">Preview draft</button><button class="button" id="page-save" type="button">Save draft</button><button class="button button-solid" id="page-publish" type="button">Publish page</button></div><p id="page-message" role="status"></p><div class="page-studio-grid"><div id="page-fields"></div><iframe id="page-frame" title="Visitor-facing page preview" loading="lazy"></iframe></div>';
  studio.prepend(root);
  const $=id=>root.querySelector('#'+id),select=$('page-select'),frame=$('page-frame'),fields=$('page-fields');
- const names=['index','about','projects','services','content','blog','wiki','community','socials'];
+ const names=['index','about','projects','services','wiki','community','socials'];
  names.forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=n==='index'?'Homepage':n[0].toUpperCase()+n.slice(1);select.append(o);});
  let saved={},version='',page='index',loaded=false,dirty=false;
  const msg=t=>$('page-message').textContent=t;

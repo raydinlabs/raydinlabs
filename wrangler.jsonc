@@ -26,7 +26,7 @@
     }
   ],
   "vars": {
-    "ADMIN_EMAIL": "raydinlabs@gmail.com",
+    "ADMIN_USERNAME": "kxizen",
     "RESEND_FROM": "Raydin Labs <website@raydinlabs.org>",
     "RESEND_TEMPLATE_ID": "352ff4ec-f8f9-4058-90e3-efaa20774cb9"
   }

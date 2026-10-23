@@ -24,7 +24,7 @@ This version needs a **Worker script + static assets**, a D1 database, and an R2
 3. Create the bucket using `npx wrangler r2 bucket create raydinlabs-media` (skip if already present). R2 must be enabled on your account. If you do not want uploads yet, remove the `r2_buckets` block; the editor still accepts HTTPS image and PDF links.
 4. Run `npm run db:remote` to apply schema and seed migrations. These insert the existing projects, wiki guides, and content; subsequent deploys do not overwrite editorial changes.
 5. Configure `RESEND_API_KEY` as a Worker **secret**. On the machine used for this setup, `npm run setup:email-secret` securely reads the newly generated, ignored `.dev.vars` file and pipes only that key to Wrangler. On another machine, create a sending-only key restricted to `raydinlabs.org` and use `npx wrangler secret put RESEND_API_KEY` interactively. Never add a key to GitHub or `wrangler.jsonc`.
-6. Run `npm run setup:admin` in your own terminal. Choose a password of at least 16 characters; input is hidden and only its salted PBKDF2 hash is stored as `ADMIN_PASSWORD_HASH`. The admin identity is `raydinlabs@gmail.com`. No default password is shipped.
+6. Run `npm run setup:admin` in your own terminal. Choose a password of at least 16 characters; input is hidden and only its salted PBKDF2 hash is stored as `ADMIN_PASSWORD_HASH`. The admin username is `kxizen`. No default password is shipped.
 7. Run `npm run build`, `npm test`, and `npm run deploy`. For Cloudflare Git builds use `npm run build` as the build command and `npm run deploy` as the deploy command, after completing the one-time resource/secret setup.
 8. Visit `/admin.html`, sign in, and publish an entry. Test Services once after deploying.
 
@@ -71,9 +71,9 @@ The website editor in `/admin.html` now supports page text and hero image/GIF/vi
 1. Ensure the production Worker uses this repository's `server/worker.js`, not a static-only Pages deployment.
 2. Set the correct D1 database ID in `wrangler.jsonc`, bind it as `DB`, and run `npm run db:remote`. The new `0003_page_editor.sql` migration is required.
 3. Bind the R2 bucket as `MEDIA` for media uploads.
-4. In your own secure terminal, run `npm run setup:admin` or set `ADMIN_PASSWORD_HASH` using `npx wrangler secret put ADMIN_PASSWORD_HASH`. Do not share the password or hash in chat or commit it. The configured `ADMIN_EMAIL` must match the login email.
+4. In your own secure terminal, run `npm run setup:admin` or set `ADMIN_PASSWORD_HASH` using `npx wrangler secret put ADMIN_PASSWORD_HASH`. Do not share the password or hash in chat or commit it. The configured `ADMIN_USERNAME` must match the login username.
 5. Deploy with `npm run build && npm test && npm run deploy`. Then verify `/api/admin/session` returns a JSON 401 when signed out (not an HTML 404), sign in through `/admin.html`, save a draft, preview, publish and check the public page.
 
-If login reports "Admin sign-in has not been configured yet", the password secret is missing. "Publishing service is not configured yet" means the DB binding is missing. A 404 or HTML response from `/api/admin/login` means the Worker API is not serving that route. "Email or password is incorrect" means credentials do not match. Rate limits can temporarily block repeated attempts.
+If login reports "Admin sign-in has not been configured yet", the password secret is missing. "Publishing service is not configured yet" means the DB binding is missing. A 404 or HTML response from `/api/admin/login` means the Worker API is not serving that route. "Username or password is incorrect" means credentials do not match. Rate limits can temporarily block repeated attempts.
 
 Page text edits currently apply to stable headings, paragraphs, labels and text links present at initial page load; editing navigation destinations, complex layouts, and dynamic collection records is handled separately. Video uploads are limited to 10 MB; for larger files use an appropriately licensed HTTPS media URL or dedicated video hosting.

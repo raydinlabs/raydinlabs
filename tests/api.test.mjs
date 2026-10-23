@@ -41,3 +41,17 @@ test('page editor saves private drafts and only publishes explicitly',async()=>{
  r=await worker.fetch(request('/api/admin/page-content','POST',{page:'index',changes:{'text:0':'Stale'},updated_at:'old',publish:true},token),env);assert.equal(r.status,409);
  r=await worker.fetch(request('/api/admin/page-content','POST',{page:'index',changes:{'text:0':'x','media:hero':'javascript:alert(1)'},updated_at:'',publish:true},token),env);assert.equal(r.status,400);
 });
+
+test('username sign-in accepts configured username and rejects old email identity',async()=>{
+ const env=await environment();env.ADMIN_USERNAME='test-admin';
+ let response=await worker.fetch(request('/api/admin/login','POST',{username:'test-admin',password:'test-only-password-long'}),env);
+ assert.equal(response.status,200);
+ response=await worker.fetch(request('/api/admin/login','POST',{username:env.ADMIN_EMAIL,password:'test-only-password-long'}),env);
+ assert.equal(response.status,401);
+});
+test('legacy content and blog links redirect into Wiki',async()=>{
+ for(const [path,anchor] of [['content','videos'],['blog','articles']]){
+ const response=await worker.fetch(request('/'+path+'.html'),{});
+ assert.equal(response.status,301);assert.ok(response.headers.get('Location').endsWith('/wiki.html#'+anchor));
+ }
+});
