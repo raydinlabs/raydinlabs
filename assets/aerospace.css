@@ -1,0 +1,34 @@
+
+/* Self-contained aerospace concept media; no third-party assets or video downloads. */
+.aero-showcase{padding:90px 0;background:#06090b;border-block:1px solid #283238;overflow:hidden}
+.aero-intro{margin-bottom:40px}.aero-intro h2{font-size:clamp(40px,6vw,85px);max-width:850px}.aero-intro>p:last-child{max-width:700px;margin-top:22px}
+.aero-media-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.aero-media{position:relative;min-width:0;overflow:hidden;background:#10191f;border:1px solid #344047}
+.aero-video-placeholder{height:clamp(280px,34vw,490px);position:relative;overflow:hidden;background:radial-gradient(ellipse at 55% 70%,#344652,#101a22 52%,#05090e)}
+.aero-video-placeholder:after{content:"CONCEPT VISUAL / VIDEO PLACEHOLDER";position:absolute;top:20px;left:22px;font:10px monospace;letter-spacing:.12em;color:#d4dce1}
+.aero-media-copy{padding:27px}.aero-media-copy h3{font-size:clamp(23px,3vw,39px);margin:15px 0}.aero-media-copy p{font-size:13px}
+.rocket-media .aero-video-placeholder{background:radial-gradient(ellipse at 50% 105%,#74574b,#17242b 42%,#070b11 80%)}
+.aero-rocket{position:absolute;top:18%;left:48%;width:38px;height:155px;transform:rotate(-16deg);animation:rocket-hover 6s ease-in-out infinite}
+.aero-rocket:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#84949b,#f5f5ee 35%,#53646e);clip-path:polygon(50% 0,100% 25%,100% 88%,76% 100%,24% 100%,0 88%,0 25%);box-shadow:0 0 35px #b7c4c4}
+.aero-rocket:after{content:"";position:absolute;top:36%;left:31%;width:14px;height:14px;border:2px solid #344955;border-radius:50%;background:#16252d}
+.aero-plume{position:absolute;top:54%;left:45%;width:100px;height:280px;background:linear-gradient(#f1dfbd,#cc7546 25%,transparent);filter:blur(22px);opacity:.6;transform:rotate(-16deg);animation:plume-pulse 3s ease-in-out infinite}
+.satellite-media .aero-video-placeholder{background:radial-gradient(ellipse at 60% 110%,#31526b,#101d2a 45%,#04080f 85%)}
+.aero-satellite{position:absolute;top:45%;left:50%;display:flex;align-items:center;gap:4px;transform:translate(-50%,-50%) rotate(-20deg);animation:satellite-float 9s ease-in-out infinite}
+.aero-satellite i{display:block;width:100px;height:70px;border:3px solid #a1b4bd;background:repeating-linear-gradient(90deg,#23425c 0 17px,#7593a5 18px 19px);box-shadow:0 0 25px #152735}
+.aero-satellite b{display:block;width:75px;height:75px;background:linear-gradient(135deg,#d4d4c6,#657986);border:3px solid #c6d3d7;transform:rotate(12deg)}
+.aero-orbit{position:absolute;left:5%;top:30%;width:90%;height:65%;border:1px solid #8297a944;border-radius:50%;transform:rotate(-20deg)}
+.aero-exploded{display:grid;grid-template-columns:1fr 1.3fr;gap:8%;align-items:center;padding-top:110px}
+.aero-exploded-copy h2{font-size:clamp(36px,4.5vw,65px);margin-bottom:20px}.aero-exploded-copy label{display:flex;justify-content:space-between;margin-top:35px;font-size:12px;gap:15px}
+#aero-explode{accent-color:#d7e3e8;width:100%;cursor:pointer}
+.aero-stage{height:470px;position:relative;overflow:hidden;border:1px solid #35454e;background:radial-gradient(ellipse at center,#25343d,#0a1015 70%);touch-action:pan-y;cursor:grab;perspective:950px}
+.aero-stage:active{cursor:grabbing}.aero-stage:focus-visible{outline:2px solid white;outline-offset:3px}
+.aero-model{--explode:50;--rotate-x:-22deg;--rotate-y:-32deg;position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(var(--rotate-x)) rotateY(var(--rotate-y));transition:transform .12s linear}
+.aero-layer{position:absolute;left:50%;top:50%;width:230px;height:145px;margin-left:-115px;margin-top:-72px;border:2px solid #c5d4d7;background:repeating-linear-gradient(90deg,#1b3845 0 28px,#305563 29px 30px);box-shadow:0 20px 55px #000a;display:flex;align-items:center;justify-content:center;transform-style:preserve-3d;transition:transform .35s ease}
+.aero-layer span{padding:8px;background:#08131ddd;color:#e8eff2;font:11px monospace;letter-spacing:.07em}
+.layer-top{transform:translateZ(calc(40px + var(--explode)*1.35px))}.layer-middle{width:200px;height:120px;margin-left:-100px;margin-top:-60px;transform:translateZ(0px);background:repeating-linear-gradient(0deg,#253c3b 0 22px,#6e9890 23px 24px)}
+.layer-bottom{width:280px;height:180px;margin-left:-140px;margin-top:-90px;transform:translateZ(calc(-40px - var(--explode)*1.35px));background:repeating-linear-gradient(90deg,#1e3933 0 33px,#739887 34px 35px)}
+.aero-stage-caption{position:absolute;bottom:18px;left:20px;font:10px monospace;letter-spacing:.1em;color:#d6e1e6}
+.aero-compact{padding-block:55px}.aero-compact .aero-intro h2{font-size:clamp(34px,4vw,55px)}
+@keyframes rocket-hover{50%{translate:0 -28px}}@keyframes plume-pulse{50%{opacity:.3;scale:.8 1.2}}@keyframes satellite-float{50%{transform:translate(-50%,-50%) rotate(-7deg) scale(1.06)}}
+@media(max-width:800px){.aero-media-grid,.aero-exploded{grid-template-columns:1fr}.aero-exploded{gap:30px;padding-top:65px}.aero-stage{height:360px}.aero-showcase{padding:65px 0}.aero-video-placeholder{height:320px}}
+@media(prefers-reduced-motion:reduce){.aero-rocket,.aero-plume,.aero-satellite{animation:none}.aero-layer,.aero-model{transition:none}}
