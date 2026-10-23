@@ -9,3 +9,5 @@ for(const file of [...Object.keys(pages(site)).map(k=>`${k}.html`),'assets','log
 await writeFile('dist/.nojekyll','');
 try{await cp('CNAME','dist/CNAME');}catch(e){if(e.code!=='ENOENT')throw e;}
 console.log('Built website into dist/. Existing root URLs are preserved.');
+
+await writeFile('dist/_redirects', '/blog /wiki#articles 301\n/blog.html /wiki#articles 301\n/content /wiki#videos 301\n/content.html /wiki#videos 301\n');
