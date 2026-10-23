@@ -121,3 +121,13 @@ a:hover .text-link,.text-link:hover{gap:36px}
 .cms-media-slot img,.cms-media-slot video{display:block;width:100%;max-height:400px;object-fit:contain}
 .hero .cms-media-slot{position:absolute;right:4%;bottom:16%;width:min(35%,470px);margin:0;pointer-events:auto}
 @media(max-width:950px){.page-studio-grid{grid-template-columns:1fr}#page-frame{height:570px}#page-fields{max-height:440px}.hero .cms-media-slot{position:relative;right:auto;bottom:auto;width:calc(100% - 40px);margin:100px auto 0}}
+
+/* Readable navigation, with room for the brand at narrower widths. */
+.site-header nav a{font-size:16px;line-height:1.5;letter-spacing:.04em;padding:12px 10px}
+@media(max-width:1100px){
+  .menu-toggle{display:flex;font-size:16px;align-items:center;min-height:48px}
+  .site-header nav{position:absolute;top:104px;left:0;right:0;display:flex;flex-direction:column;gap:0;padding:22px 30px;visibility:hidden;opacity:0;transform:translateY(-8px);transition:opacity .25s,transform .25s,visibility .25s;border:0;background:rgba(26,38,57,.96);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);max-height:calc(100svh - 104px);overflow:auto;box-shadow:0 22px 45px rgba(0,0,0,.5)}
+  .site-header nav.is-open{visibility:visible;opacity:1;transform:none}
+  .site-header nav a{font-size:18px;padding:12px 16px}
+}
+@media(max-width:800px){.site-header nav{top:92px;max-height:calc(100svh - 92px)}}
