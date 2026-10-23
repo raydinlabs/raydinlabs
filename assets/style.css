@@ -58,3 +58,50 @@ h1{font-size:clamp(56px,7vw,104px)}h2{font-size:clamp(42px,5vw,72px)}h3{font-siz
 @media(max-width:1100px) and (min-width:801px){.hero-copy h1{font-size:clamp(48px,5.6vw,62px)}}
 @media(max-width:800px){.hero-copy.wrap{left:20px;width:calc(100% - 40px)}.hero-copy h1{font-size:clamp(46px,8vw,64px);max-width:600px}#stars{opacity:.45}#earth{right:-1190px}}
 @media(max-width:420px){.hero-copy h1{font-size:46px}#earth{right:-1100px}}
+
+
+/* Cinematic editorial refinement — retains the Raydin Labs structure and content. */
+:root{--bg:#050607;--surface:#101315;--line:#343b3d;--text:#f2f0ea;--muted:#afb5b5;--accent:#f2f0ea;--steel:#343c40}
+body{background:var(--bg);-webkit-font-smoothing:antialiased}
+::selection{background:#e8e5d8;color:#090b0d}
+.site-header{position:absolute;background:linear-gradient(180deg,rgba(5,7,8,.9),rgba(5,7,8,.48));border-bottom:1px solid rgba(255,255,255,.17);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);transition:background .45s ease,box-shadow .45s ease}
+.site-header.is-scrolled{background:rgba(6,8,9,.95);box-shadow:0 12px 35px rgba(0,0,0,.25)}
+.site-header nav a{border-radius:0;letter-spacing:.12em;font-size:10px;text-transform:uppercase}
+.site-header nav a:hover,.site-header nav a[aria-current=page]{background:transparent}
+.site-header nav a::before{content:"";position:absolute;bottom:5px;left:12px;right:12px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.site-header nav a:hover::before,.site-header nav a[aria-current=page]::before{transform:scaleX(1)}
+.hero{background:#050708}
+.galaxy-scene{background:radial-gradient(ellipse at 72% 45%,#182127 0%,#080d11 50%,#050607 90%)}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(2,4,6,.74),rgba(2,4,6,.13) 72%),linear-gradient(0deg,rgba(2,4,6,.72),transparent 44%)}
+.hero-copy h1,.page-heading h1{font-size:clamp(54px,7.4vw,116px);font-weight:500;line-height:.94;letter-spacing:-.055em;text-wrap:balance}
+.hero-copy h1{max-width:1100px}
+.hero-copy p:not(.eyebrow){max-width:640px}
+.eyebrow,.small,.tag{letter-spacing:.16em;text-transform:uppercase}
+.section,.project-stack{position:relative}
+.section-title h2,.mission-grid h2,.cta h2{letter-spacing:-.055em;line-height:1.04}
+.button,.hero-actions .button{position:relative;overflow:hidden;border-radius:0;border:1px solid rgba(242,240,234,.55);background:transparent;backdrop-filter:none;transition:color .4s ease,border-color .4s ease,transform .4s ease}
+.button::before{content:"";position:absolute;inset:0;background:#f2f0ea;transform:translateY(102%);transition:transform .48s cubic-bezier(.2,.8,.2,1);z-index:-1}
+.button:hover,.hero-actions .button:hover{color:#090b0d;border-color:#f2f0ea;transform:translateY(-2px);background:transparent}
+.button:hover::before{transform:translateY(0)}
+.button-solid{background:#f2f0ea;color:#090b0d}
+.button-solid::before{background:#c3c9c8}
+.text-link{transition:gap .35s ease,color .35s ease}
+a:hover .text-link,.text-link:hover{gap:36px}
+.update-feature,.project-detail,.directory a,.principle,.service-row,.social-row{transition:background .5s ease,border-color .5s ease}
+.update-feature:hover,.directory a:hover,.social-row:hover{background:rgba(255,255,255,.035)}
+.update-feature{border-color:rgba(255,255,255,.2)}
+.project-art{animation:none;overflow:hidden;background:radial-gradient(circle at center,#1b262c,#080b0d 70%)}
+.project-detail:hover .project-art{transform:none}
+.project-detail:hover .hardware{transform:rotate(-25deg) skewY(10deg) translateY(-9px)}
+.hardware{transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.mission-band,.brief-section{background:#101416}
+.page-heading{background:radial-gradient(ellipse at 85% 0%,#172026 0%,transparent 60%);min-height:420px}
+.reveal{opacity:0;transform:translateY(42px);transition:opacity 1s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)}
+.reveal.in-view{opacity:1;transform:translateY(0)}
+.hero-copy{animation:rdl-enter 1.2s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rdl-enter{from{opacity:0;transform:translateY(35px)}to{opacity:1;transform:translateY(0)}}
+.footer-wordmark{letter-spacing:-.065em;color:#8f9695;transition:color .5s ease}
+.footer-wordmark:hover{color:#f2f0ea}
+@media(max-width:800px){.site-header nav{background:#080b0df7}.site-header nav a::before{left:0;right:auto;width:36px}.hero-copy h1{font-size:clamp(50px,9vw,78px)}}
+@media(max-width:580px){.hero-copy h1{font-size:clamp(47px,11vw,65px)}.hero-copy{bottom:21%}.page-heading{min-height:0}.site-header nav a{font-size:13px}.section-title h2{font-size:clamp(34px,9vw,52px)}}
+@media(prefers-reduced-motion:reduce){.hero-copy{animation:none}.reveal{opacity:1;transform:none}.button::before,.site-header nav a::before{transition:none}}
