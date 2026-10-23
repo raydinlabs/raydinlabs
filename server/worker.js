@@ -13,6 +13,20 @@ async function readBody(request,limit=100000){const reader=request.body?.getRead
 function text(data,key,max,required=false){const value=data[key]??'';if(typeof value!=='string'||value.length>max||(required&&!value.trim()))failure(`Invalid ${key.replaceAll('_',' ')}.`);return value.trim();}
 export function safeURL(value){if(!value)return '';try{const url=new URL(value);if(url.protocol!=='https:'||url.username||url.password)throw Error();return url.href;}catch{failure('Links must use HTTPS.');}}
 export function validateEntry(data){const entry={};for(const [key,max,required] of [['title',180,true],['summary',600],['body',50000],['process',20000],['image_alt',300]])entry[key]=text(data,key,max,required);if(!kinds.includes(data.kind))failure('Unknown collection.');entry.kind=data.kind;entry.published=data.published===true||data.published===1||data.published==='1'?1:0;for(const key of ['demo_url','image_url','document_url'])entry[key]=safeURL(text(data,key,2048));return entry;}
+const editablePages=new Set(['index','about','projects','services','content','blog','wiki','community','socials']);
+function pageName(value){if(!editablePages.has(value))failure('Unknown editable page.');return value;}
+function validatePageData(value){
+ if(!value||typeof value!=='object'||Array.isArray(value))failure('Invalid page changes.');
+ const keys=Object.keys(value);if(keys.length>250)failure('Too many changes.');
+ const out={};
+ for(const key of keys){
+  if(!/^(text|media):[a-zA-Z0-9_-]{1,100}$/.test(key))failure('Invalid editable field.');
+  const val=value[key];
+  if(typeof val!=='string'||val.length>10000)failure('Invalid field content.');
+  if(key.startsWith('media:')&&val)out[key]=safeURL(val);else out[key]=val;
+ }
+ return out;
+}
 function requireDB(env){if(!env.DB)failure('Publishing service is not configured yet.',503);}
 async function rateLimit(request,env,scope,limit){requireDB(env);const time=Math.floor(Date.now()/1000);const bucket=Math.floor(time/600);const ip=request.headers.get('CF-Connecting-IP')||'local';const key=await digest(`${scope}:${ip}:${bucket}`);const row=await env.DB.prepare('INSERT INTO rate_limits (key,count,expires) VALUES (?,1,?) ON CONFLICT(key) DO UPDATE SET count=count+1 RETURNING count').bind(key,time+1200).first();if(row.count>limit)failure('Too many attempts. Please try again in ten minutes.',429);await env.DB.prepare('DELETE FROM rate_limits WHERE expires < ?').bind(time).run();}
 async function session(request,env){requireDB(env);const token=(request.headers.get('cookie')||'').match(/(?:^|;\s*)rdl_session=([a-f0-9]{64})(?:;|$)/)?.[1];if(!token)return null;const hash=await digest(token);return env.DB.prepare('SELECT token_hash,email FROM sessions WHERE token_hash=? AND expires>?').bind(hash,Date.now()).first();}
@@ -27,6 +41,12 @@ async function sendContact(request,env){await rateLimit(request,env,'contact',5)
 }
 async function api(request,env){const url=new URL(request.url),path=url.pathname,method=request.method;
  if(!['GET','HEAD'].includes(method)&&request.headers.get('Origin')!==url.origin)failure('This request must come from this website.',403);
+ if(path==='/api/page-content'&&method==='GET'){
+  const page=pageName(url.searchParams.get('page'));
+  if(!env.DB)return json({changes:{}});
+  const row=await env.DB.prepare('SELECT published FROM page_edits WHERE page=?').bind(page).first();
+  return json({changes:row?JSON.parse(row.published):{}});
+ }
  if(path==='/api/contact'&&method==='POST')return sendContact(request,env);
  if(path==='/api/entries'&&method==='GET'){
  const kind=url.searchParams.get('kind');if(kind&&!kinds.includes(kind))failure('Unknown collection.');
@@ -41,6 +61,20 @@ async function api(request,env){const url=new URL(request.url),path=url.pathname
  const user=await session(request,env);if(!user)failure('Please sign in to continue.',401);
  if(path==='/api/admin/session'&&method==='GET')return json({email:user.email});
  if(path==='/api/admin/logout'&&method==='POST'){await env.DB.prepare('DELETE FROM sessions WHERE token_hash=?').bind(user.token_hash).run();return json({ok:true},200,{'Set-Cookie':cookie('',0)});}
+ if(path==='/api/admin/page-content'&&method==='GET'){
+  const page=pageName(url.searchParams.get('page'));
+  const row=await env.DB.prepare('SELECT draft,published,updated_at FROM page_edits WHERE page=?').bind(page).first();
+  return json({draft:row?JSON.parse(row.draft):{},published:row?JSON.parse(row.published):{},updated_at:row?.updated_at||''});
+ }
+ if(path==='/api/admin/page-content'&&method==='POST'){
+  const data=await readBody(request,250000),page=pageName(data.page);
+  const draft=validatePageData(data.changes),publish=data.publish===true;
+  const old=await env.DB.prepare('SELECT published,updated_at FROM page_edits WHERE page=?').bind(page).first();
+  if(old&&old.updated_at!==data.updated_at)failure('Page changed in another session. Reload before saving.',409);
+  const now=new Date().toISOString(),published=publish?JSON.stringify(draft):(old?.published||'{}');
+  await env.DB.prepare('INSERT INTO page_edits(page,draft,published,updated_at) VALUES(?,?,?,?) ON CONFLICT(page) DO UPDATE SET draft=excluded.draft,published=excluded.published,updated_at=excluded.updated_at').bind(page,JSON.stringify(draft),published,now).run();
+  return json({draft,published:JSON.parse(published),updated_at:now});
+ }
  if(path==='/api/admin/entries'&&method==='GET'){const {results}=await env.DB.prepare('SELECT * FROM entries ORDER BY updated_at DESC').all();return json({entries:results});}
  if(path==='/api/admin/entries'&&method==='POST'){
  const data=await readBody(request),entry=validateEntry(data);const id=text(data,'id',80)||crypto.randomUUID(),updated=new Date().toISOString();const previous=await env.DB.prepare('SELECT updated_at FROM entries WHERE id=?').bind(id).first();const columns=Object.keys(entry),values=Object.values(entry);
