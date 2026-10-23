@@ -12,3 +12,20 @@ test('all pages preserve navigation, local destinations and section anchors',asy
 });
 test('project brief preserves user text and does not execute markup',()=>{const brief=makeBrief({name:' Test ',email:'test@example.com',service:'Consultation',requirements:'<script>alert(1)</script> & notes'});assert.match(brief,/Name: Test/);assert.match(brief,/Budget: To be discussed/);assert.ok(brief.includes('<script>alert(1)</script> & notes'));});
 test('wiki search filters topics and restores all results',()=>{const guides=[{textContent:'Power issue',dataset:{keywords:'pcb'},hidden:false},{textContent:'Serial',dataset:{keywords:'uart'},hidden:false}];assert.equal(filterGuides(guides,' UART '),1);assert.equal(guides[0].hidden,true);assert.equal(filterGuides(guides,''),2);assert.equal(filterGuides(guides,'unmatched'),0);});
+
+test('aerospace concept sections are present and retain accessible fallbacks',async()=>{
+ for(const page of ['index','about','projects','services']){
+  const html=await readFile(page+'.html','utf8');
+  assert.match(html,/class="aero-showcase/);
+  assert.match(html,/VIDEO PLACEHOLDER/);
+  assert.match(html,/data-aero-stage/);
+  assert.match(html,/assets\/aerospace\.css/);
+  assert.match(html,/assets\/aerospace\.js/);
+  assert.equal((html.match(/id="aero-explode"/g)||[]).length,1);
+ }
+ const source=await readFile('src/pages.mjs','utf8');
+ assert.match(source,/aerospaceShowcase/);
+ const script=await readFile('assets/aerospace.js','utf8');
+ assert.match(script,/pointercancel/);
+ assert.match(script,/ArrowLeft/);
+});
