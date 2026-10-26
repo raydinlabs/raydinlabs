@@ -131,3 +131,20 @@ a:hover .text-link,.text-link:hover{gap:36px}
   .site-header nav a{font-size:18px;padding:12px 16px}
 }
 @media(max-width:800px){.site-header nav{top:92px;max-height:calc(100svh - 92px)}}
+
+/* Audit refinements: shared readable comparison, feedback and reflow. */
+.service-comparison{width:100%;border-collapse:collapse;text-align:left;font-size:1rem}
+.service-comparison caption{text-align:left;color:var(--muted);margin:18px 0}
+.service-comparison th,.service-comparison td{padding:20px 16px;border-bottom:1px solid var(--steel);vertical-align:top;line-height:1.6}
+.service-comparison th{color:var(--text)}
+.comparison-scroll{overflow-x:auto;margin:24px 0}
+.field-error{display:block;color:#ffb4a8;font-size:.9rem;line-height:1.5;margin-top:8px}
+[aria-invalid="true"]{border-color:#ffb4a8}
+[hidden]{display:none!important}
+.entry-card h3,.reading{overflow-wrap:anywhere}
+.hero-copy .hero-summary{max-width:560px;font-size:clamp(16px,1.3vw,20px)}
+.hero-copy.wrap{width:53%;bottom:15%}
+.hero-copy h1{font-size:clamp(48px,6vw,90px)}
+@media(max-width:800px){.hero-copy.wrap{width:calc(100% - 40px);bottom:110px}.hero-copy h1{font-size:clamp(42px,8vw,64px)}.hero-actions{flex-wrap:wrap}.service-comparison th,.service-comparison td{padding:14px 10px}.comparison-scroll{max-width:100%}}
+@media(max-width:420px){.hero-copy h1{font-size:42px}.hero-copy .hero-summary{font-size:16px}.hero-actions .button{font-size:11px}.service-comparison{min-width:560px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}

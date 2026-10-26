@@ -2,7 +2,7 @@
 const page=location.pathname.split('/').pop().replace(/\.html$/,'')||'index';
 const allowed=['index','about','projects','services','content','blog','wiki','community','socials'];
 if(allowed.includes(page)){
- const editable=()=>[...document.querySelectorAll('main h1,main h2,main h3,main p:not(.note),main .tag,main .text-link')].filter(n=>!n.closest('form,[data-collection],.reading,.aero-showcase')&&!n.id?.startsWith('brief-'));
+ const editable=()=>[...document.querySelectorAll('main h1,main h2,main h3,main p:not(.note),main .tag,main .text-link')].filter(n=>!n.closest('form,[data-collection],[data-cms-exclude],.reading,.aero-showcase')&&!n.id?.startsWith('brief-'));
  const nodes=editable();
  nodes.forEach((n,i)=>n.dataset.cmsKey='text:'+i);
  const mediaHost=document.querySelector('main .hero,main .page-heading');
