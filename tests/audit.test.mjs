@@ -23,7 +23,7 @@ test('enquiry supports uncertain service selection, stage and accessible guidanc
  assert.match(html,/name="stage"/);
  assert.match(html,/aria-describedby="requirements-help"/);
  assert.match(html,/<label class="honeypot" hidden aria-hidden="true">/);
- assert.match(html,/<caption>Engagement models/);
+ assert.ok(!html.includes('<table')); assert.equal((html.match(/<dt>Best fit/g)||[]).length,4); assert.equal((html.match(/<dt>Typical deliverables/g)||[]).length,4);
  assert.ok(html.includes(">Contact</a>"));
 });
 class Element {
@@ -59,3 +59,4 @@ test('article search does not hide video or project cards',async()=>{
  assert.equal(blog.hidden,true);assert.equal(video.hidden,undefined);assert.equal(status.textContent,'No matching articles.');
  search.listeners.input({target:{value:''}});assert.equal(blog.hidden,false);
 });
+
