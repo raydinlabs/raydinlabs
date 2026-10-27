@@ -198,3 +198,9 @@ input,textarea,select{background:#101312;border:1px solid #606963;color:#f2f2ed;
 @media(prefers-reduced-transparency:reduce){
  .site-header,.site-header.is-scrolled,.page-index .site-header,.page-index .site-header.is-scrolled{background:#0b0b0b}
 }
+
+/* Extend the desktop globe scene to the viewport edge beside the scrollbar. */
+@media(min-width:801px){
+ .page-index .cinematic-hero{margin-inline:0;width:100%;max-width:none}
+ .page-index #earth{width:max(86vw,110vh);height:max(86vw,110vh)}
+}
