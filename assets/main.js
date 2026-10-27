@@ -21,8 +21,10 @@ form?.addEventListener('submit',async e=>{
 const motion=matchMedia('(prefers-reduced-motion: reduce)');
 const header=document.querySelector('.site-header');
 const syncHeader=()=>header?.classList.toggle('is-scrolled',window.scrollY>24);
-window.addEventListener('scroll',syncHeader,{passive:true});syncHeader();
+let headerFrame=0;
+window.addEventListener('scroll',()=>{if(!headerFrame)headerFrame=requestAnimationFrame(()=>{headerFrame=0;syncHeader();});},{passive:true});syncHeader();
 if(!motion.matches && 'IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>{for(const e of entries)if(e.isIntersecting){e.target.classList.add('in-view');observer.unobserve(e.target);}},{threshold:.08});document.querySelectorAll('.section-title,.project-detail,.service-row,.principle,.update-list>a,.mission-grid,.directory a,.cta,.social-row').forEach(el=>{el.classList.add('reveal');observer.observe(el);});}
+motion.addEventListener('change',()=>{if(motion.matches)document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in-view'));});
 menu?.addEventListener('click',()=>menu.setAttribute('aria-label',menu.getAttribute('aria-expanded')==='true'?'Close navigation':'Open navigation'));
 
 const discussionButton=document.querySelector('#load-discussions');
