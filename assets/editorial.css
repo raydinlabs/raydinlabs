@@ -23,7 +23,7 @@ h2{font-size:clamp(30px,4.2vw,62px)}h3{font-size:clamp(22px,2.3vw,34px)}
 .earth-scene{inset:0;background:#071013;-webkit-mask-image:none;mask-image:none}
 #earth{width:min(80vw,1250px);height:min(80vw,1250px);top:50%;right:-12%;left:auto;bottom:auto;transform:translateY(-48%);opacity:.85}
 #stars{opacity:.45}
-.hero-copy.wrap{position:absolute;left:40px;right:auto;bottom:94px;width:min(700px,65%);max-width:none;margin:0;translate:none;animation:none}
+.hero-copy.wrap{position:absolute;left:40px;right:auto;bottom:94px;width:min(700px,65%);max-width:none;margin:0;translate:none;animation:rdl-enter 1.2s cubic-bezier(.2,.8,.2,1) both}
 .hero-copy h1{font-size:clamp(48px,5.5vw,82px);font-weight:400;line-height:1;letter-spacing:-.045em;max-width:760px;text-wrap:initial;text-transform:none;text-shadow:none}
 .hero-copy .eyebrow{font-size:11px;letter-spacing:.14em}
 .hero-copy h1 em{font-style:normal;color:inherit}
@@ -238,4 +238,55 @@ input,textarea,select{background:#101312;border:1px solid #606963;color:#f2f2ed;
  .page-index .hero-copy.wrap{width:calc(100% - 40px);margin-left:20px}
  .page-index .hero-copy h1{font-size:clamp(28px,7vw,38px)}
  .page-index .hero-copy .eyebrow{font-size:10px;margin-bottom:16px}
+}
+
+/* Motion reliability and viewport-aware rhythm: shared, adjustable layout properties. */
+:root{
+ --page-gutter:clamp(18px,3vw,56px);
+ --section-rhythm:clamp(64px,7vw,128px);
+ --layout-gap:clamp(24px,3.6vw,72px);
+ --panel-gap:clamp(14px,1.8vw,28px);
+}
+.section{padding-block:var(--section-rhythm)}
+.section-title{gap:clamp(20px,3vw,48px);margin-bottom:clamp(32px,4vw,64px)}
+.section-title>*{min-width:0}
+.three-col{gap:var(--layout-gap)}
+.split-section,.project-detail,.brief-grid{gap:var(--layout-gap)}
+.project-detail{padding-block:clamp(56px,7vw,112px)}
+.service-row{column-gap:var(--layout-gap);row-gap:clamp(24px,3vw,52px);padding-block:clamp(44px,5vw,80px)}
+.mission-grid{gap:var(--layout-gap)}
+.mission-band{padding-block:var(--section-rhythm)}
+.cta{padding-block:var(--section-rhythm);gap:var(--layout-gap)}
+.capabilities .principle{min-width:0}
+.project-detail>*,.split-section>*,.brief-grid>*,.mission-grid>*{min-width:0}
+.page-heading{padding-block:clamp(84px,10vw,164px) clamp(48px,6vw,96px)}
+.page-index .hero-copy.wrap{width:min(900px,calc(100% - 2 * var(--page-gutter)));margin-left:var(--page-gutter)}
+.page-index .hero-actions{gap:clamp(12px,2vw,22px)}
+/* Switch to the compact navigation before desktop links collide. */
+@media(max-width:1100px){
+ .site-header,.site-header.is-scrolled{position:sticky}
+ .page-index .site-header,.page-index .site-header.is-scrolled{position:fixed}
+ .menu-toggle{display:flex;align-items:center;justify-content:center;min-width:46px;min-height:46px;border:0;background:transparent}
+ .site-header nav{display:none;position:absolute;top:100%;left:0;right:0;max-height:calc(100svh - 68px);overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:18px var(--page-gutter) 28px;background:rgba(8,12,13,.96);border-bottom:1px solid var(--line);visibility:visible;opacity:1;transform:none}
+ .site-header nav.is-open{display:flex}
+ .site-header nav a{font-size:16px;padding:13px 0;min-height:44px}
+}
+@media(max-width:900px){
+ .split-section,.project-detail,.brief-grid{grid-template-columns:minmax(0,1fr)}
+ .project-detail:nth-child(even) .project-art{order:initial}
+ .mission-grid{grid-template-columns:minmax(0,1fr)}
+ .three-col{grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+ .update-list{grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))}
+ .section-title{align-items:flex-start;flex-wrap:wrap}
+ .page-index .hero-copy.wrap{margin-left:var(--page-gutter)}
+}
+@media(max-width:540px){
+ .page-index .hero-copy.wrap{width:calc(100% - 2 * var(--page-gutter));margin-left:var(--page-gutter)}
+ .page-index .hero-actions{display:flex;flex-wrap:wrap}
+ .page-index .hero-actions .button{min-width:min(100%,235px)}
+ .page-index .cinematic-hero{padding-top:clamp(110px,20vh,160px)}
+ .footer-bottom{flex-wrap:wrap}
+}
+@media(prefers-reduced-motion:reduce){
+ .hero-copy.wrap,.page-index .hero-copy.wrap{animation:none}
 }
