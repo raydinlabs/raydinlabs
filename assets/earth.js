@@ -72,13 +72,60 @@ async function init(canvas) {
 }
 // Software sphere projection provides a textured Earth without WebGL.
 function fallback(image,canvas){
- const ctx=canvas.getContext('2d'),map=document.createElement('canvas');map.width=image.width;map.height=image.height;
- const source=map.getContext('2d');source.drawImage(image,0,0);const pixels=source.getImageData(0,0,map.width,map.height).data;
- canvas.width=canvas.height=480;const frame=ctx.createImageData(480,480);
- for(let y=0;y<480;y++)for(let x=0;x<480;x++){const nx=(x-240)/214,ny=(240-y)/214,r=nx*nx+ny*ny;if(r>1)continue;const z=Math.sqrt(1-r),u=((Math.atan2(nx,z)/(2*Math.PI)+.42)%1+1)%1,v=Math.acos(ny)/Math.PI,src=(Math.min(map.height-1,Math.floor(v*map.height))*map.width+Math.floor(u*map.width))*4,dst=(y*480+x)*4,light=.035+.965*Math.max(0,(-.8*nx+.6*ny+1.4*z)/Math.sqrt(2.96));for(let c=0;c<3;c++)frame.data[dst+c]=pixels[src+c]*light;frame.data[dst+3]=255;}
- ctx.putImageData(frame,0,0);canvas.dataset.ready='true';canvas.dataset.renderer='software-static';
+ // A low-frequency, CPU-only rotating globe when WebGL is blocked or reset.
+ // Keep movement visible without relying on GPU drivers or hardware acceleration.
+ const ctx=canvas.getContext('2d',{alpha:true});
+ if(!ctx){canvas.hidden=true;return;}
+ const map=document.createElement('canvas');map.width=image.width;map.height=image.height;
+ const source=map.getContext('2d',{willReadFrequently:true});
+ if(!source){canvas.hidden=true;return;}
+ source.drawImage(image,0,0);
+ const pixels=source.getImageData(0,0,map.width,map.height).data;
+ const size=320,cx=size/2,scale=size*214/480,count=size*size;
+ canvas.width=canvas.height=size;
+ const frame=ctx.createImageData(size,size);
+ const longitude=new Float32Array(count),rows=new Int32Array(count),lighting=new Float32Array(count);
+ const active=[];
+ for(let y=0;y<size;y++)for(let x=0;x<size;x++){
+  const nx=(x-cx)/scale,ny=(cx-y)/scale,r=nx*nx+ny*ny;
+  if(r>=1)continue;
+  const z=Math.sqrt(1-r),i=y*size+x;
+  longitude[i]=Math.atan2(nx,z)/(2*Math.PI)+.42;
+  rows[i]=Math.min(map.height-1,Math.floor(Math.acos(ny)/Math.PI*map.height))*map.width;
+  lighting[i]=.035+.965*Math.max(0,(-.8*nx+.6*ny+1.4*z)/Math.sqrt(2.96));
+  frame.data[i*4+3]=255;active.push(i);
+ }
+ let offset=0,last=null,lastDraw=0,raf=0,visible=true;
+ function draw(){
+  const dest=frame.data;
+  for(const i of active){
+   const u=((longitude[i]+offset)%1+1)%1;
+   const src=(rows[i]+Math.min(map.width-1,Math.floor(u*map.width)))*4,dst=i*4;
+   const light=lighting[i];
+   dest[dst]=pixels[src]*light;
+   dest[dst+1]=pixels[src+1]*light;
+   dest[dst+2]=pixels[src+2]*light;
+  }
+  ctx.putImageData(frame,0,0);
+ }
+ function tick(now){
+  if(last!==null)offset=(offset+Math.min(now-last,100)*.000012)%1;
+  last=now;
+  if(now-lastDraw>=100){draw();lastDraw=now;}
+  raf=requestAnimationFrame(tick);
+ }
+ function sync(){
+  cancelAnimationFrame(raf);raf=0;last=null;lastDraw=0;
+  draw();
+  if(!reduced.matches&&!document.hidden&&visible)raf=requestAnimationFrame(tick);
+ }
+ const observer='IntersectionObserver' in window?new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;sync();}):null;
+ observer?.observe(canvas);
+ reduced.addEventListener?.('change',sync);
+ document.addEventListener('visibilitychange',sync);
+ canvas.dataset.ready='true';canvas.dataset.renderer=reduced.matches?'software-static':'software-animated';
+ sync();
 }
-
 // Stable, sparse stars rendered at device resolution without a large image download.
 const stars=document.querySelector('#stars');
 if(stars){const ctx=stars.getContext('2d');new ResizeObserver(()=>{const r=stars.getBoundingClientRect(),dpr=Math.min(devicePixelRatio,2);stars.width=r.width*dpr;stars.height=r.height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);let seed=87;const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};for(let i=0;i<240;i++){const x=random()*r.width,y=random()*r.height,size=.25+random()*.85;ctx.fillStyle=`rgba(210,224,242,${.12+random()*.48})`;ctx.beginPath();ctx.arc(x,y,size,0,Math.PI*2);ctx.fill();}}).observe(stars);}
