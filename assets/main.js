@@ -1,9 +1,13 @@
 import {filterGuides} from './utils.js';
 const menu=document.querySelector('.menu-toggle'),nav=document.querySelector('#main-nav');
-function closeMenu(){menu.setAttribute('aria-expanded','false');nav.classList.remove('is-open');menu.setAttribute('aria-label','Open navigation');}
+function closeMenu(){if(!menu||!nav)return;menu.setAttribute('aria-expanded','false');nav.classList.remove('is-open');menu.setAttribute('aria-label','Open navigation');}
 menu?.addEventListener('click',()=>{const open=menu.getAttribute('aria-expanded')!=='true';menu.setAttribute('aria-expanded',String(open));nav.classList.toggle('is-open',open);});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menu?.getAttribute('aria-expanded')==='true'){closeMenu();menu.focus();}});
 nav?.addEventListener('click',e=>{if(e.target.closest('a'))closeMenu();});
+document.addEventListener('click',e=>{if(menu?.getAttribute('aria-expanded')==='true'&&!menu.contains(e.target)&&!nav?.contains(e.target))closeMenu();});
+const compactNav=matchMedia('(max-width: 1100px)');
+const resetNav=()=>closeMenu();
+if(compactNav.addEventListener)compactNav.addEventListener('change',resetNav);else compactNav.addListener?.(resetNav);
 const search=document.querySelector('#wiki-search');
 search?.addEventListener('input',()=>{const guides=[...document.querySelectorAll('.wiki-guide')];if(!guides.length)return;const count=filterGuides(guides,search.value);document.querySelector('#wiki-empty').hidden=count!==0;});
 const form=document.querySelector('#brief-form');
