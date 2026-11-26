@@ -1,5 +1,6 @@
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+const lowPower = Boolean(navigator.connection?.saveData) || (navigator.hardwareConcurrency > 0 && navigator.hardwareConcurrency <= 4);
 for (const canvas of document.querySelectorAll('#earth')) init(canvas).catch(error => { console.warn('Planet renderer:', error); canvas.hidden = true; });
 async function init(canvas) {
   const image = new Image(); image.src = 'assets/earth-day.jpg'; await image.decode();
@@ -42,16 +43,16 @@ async function init(canvas) {
   function tick(now){
     if(last!==null)rotation=(rotation+Math.min(now-last,100)*0.000012)%1;
     last=now;
-    // Preserve angular speed at any refresh rate; render at most 60 times/second.
-    if(lastDraw===null||now-lastDraw>=1000/60-0.5){draw();lastDraw=now;}
+    // Preserve angular speed at any refresh rate; render at most 30 times/second.
+    if(lastDraw===null||now-lastDraw>=1000/30-0.5){draw();lastDraw=now;}
     raf=requestAnimationFrame(tick);
   }
-  function sync(){cancelAnimationFrame(raf);last=null;lastDraw=null;if(lost)return;draw();if(!reduced.matches&&!document.hidden&&visible)raf=requestAnimationFrame(tick);}
+  function sync(){cancelAnimationFrame(raf);last=null;lastDraw=null;if(lost)return;draw();if(!reduced.matches&&!document.hidden&&visible&&!lowPower)raf=requestAnimationFrame(tick);}
   function resize(){
     if(lost)return;
     const rect=canvas.getBoundingClientRect();
     if(!rect.width||!rect.height)return;
-    const dpr=Math.min(devicePixelRatio||1,1.5,1800/Math.max(rect.width,rect.height));
+    const dpr=Math.min(devicePixelRatio||1,1.5,1440/Math.max(rect.width,rect.height));
     const width=Math.max(1,Math.round(rect.width*dpr)),height=Math.max(1,Math.round(rect.height*dpr));
     if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height;}
     gl.viewport(0,0,width,height);gl.uniform1f(aspect,rect.width/rect.height);draw();
@@ -117,13 +118,13 @@ function fallback(image,canvas){
  function sync(){
   cancelAnimationFrame(raf);raf=0;last=null;lastDraw=0;
   draw();
-  if(!reduced.matches&&!document.hidden&&visible)raf=requestAnimationFrame(tick);
+  if(!reduced.matches&&!document.hidden&&visible&&!lowPower)raf=requestAnimationFrame(tick);
  }
  const observer='IntersectionObserver' in window?new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;sync();}):null;
  observer?.observe(canvas);
  reduced.addEventListener?.('change',sync);
  document.addEventListener('visibilitychange',sync);
- canvas.dataset.ready='true';canvas.dataset.renderer=reduced.matches?'software-static':'software-animated';
+ canvas.dataset.ready='true';canvas.dataset.renderer=(reduced.matches||lowPower)?'software-static':'software-animated';
  sync();
 }
 // Stable, sparse stars rendered at device resolution without a large image download.
