@@ -290,3 +290,26 @@ input,textarea,select{background:#101312;border:1px solid #606963;color:#f2f2ed;
 @media(prefers-reduced-motion:reduce){
  .hero-copy.wrap,.page-index .hero-copy.wrap{animation:none}
 }
+
+/* Product-led editorial refinement. Keep the original display font and orbital scene. */
+:root{--header-height:68px}
+html{scroll-padding-top:calc(var(--header-height) + 20px)}
+.site-header,.page-index .site-header{background:rgba(12,12,12,.42);height:var(--header-height);min-height:var(--header-height)}
+.site-header.is-scrolled,.page-index .site-header.is-scrolled{background:rgba(12,12,12,.78)}
+.site-header nav a{position:relative}
+:where(a,button,input,select,textarea,summary):focus-visible{outline:2px solid #f2f2ed;outline-offset:4px}
+.page-index .cinematic-hero{min-height:max(560px,100vh);min-height:max(560px,100svh);padding-top:calc(var(--header-height) + 40px);padding-bottom:86px;overflow:hidden;isolation:isolate}
+.page-index .hero-copy.wrap{width:min(840px,calc(100% - 2 * var(--page-gutter)));min-width:0}
+.page-index .hero-copy h1{font-size:clamp(40px,6vw,94px);line-height:1.02;overflow-wrap:normal;text-shadow:0 2px 24px #000}
+.page-index .hero-copy .hero-summary{font-size:clamp(16px,1.4vw,21px);max-width:34ch}
+.page-index .hero-actions .button-solid{min-height:48px;font-size:14px}
+.technology-roadmap{border-top:1px solid var(--line);padding-block:clamp(36px,5vw,80px)}
+.technology-roadmap p:not(.eyebrow){max-width:65ch}
+.technology-roadmap h2{margin-block:12px 20px}
+.project-art img{max-width:100%;height:auto}
+.update-feature,.update-list>a{min-width:0}
+@media(max-width:1100px){.site-header nav,.page-index .site-header nav.is-open{background:rgba(10,10,10,.97);max-height:calc(100vh - var(--header-height));max-height:calc(100svh - var(--header-height))}.site-header nav a{min-height:48px}}
+@media(max-width:540px){.page-index .hero-copy h1{font-size:clamp(30px,8vw,48px)}.page-index .cinematic-hero{min-height:max(540px,100svh);padding-bottom:76px}.page-index .hero-actions .button-solid{min-width:0;width:auto;max-width:100%;white-space:normal}.brand{min-width:0}.site-header{gap:12px}.page-index .hero-copy .hero-summary{font-size:16px}}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.site-header,.site-header.is-scrolled,.page-index .site-header,.page-index .site-header.is-scrolled{background:#101010}}
+@media(prefers-reduced-transparency:reduce){.site-header,.site-header.is-scrolled,.page-index .site-header,.page-index .site-header.is-scrolled{background:#101010;backdrop-filter:none;-webkit-backdrop-filter:none}}
+@media(prefers-reduced-motion:reduce){.reveal,.hero-copy,.project-art,.hardware,.orbit{animation:none!important;transition:none!important;opacity:1}.button,.menu-icon i{transition:none}}
